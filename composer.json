@@ -3,7 +3,7 @@
     "type": "library",
     "description" : 'RD Station Client for PHP',
     "keywords" : ['rdstation-php-client'],
-    "homepage": "https://github.com/php-amqplib/php-amqplib/",
+    "homepage": "https://github.com/contamobi/rdstation-php-client/",
     "authors": [
         {
             "name": "João Paulo De Lazari",
