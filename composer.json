@@ -1,6 +1,6 @@
 {
     "name" : 'rdstation-php-client/rdstation-php-client',
-    "type": "library",
+    "type": "package",
     "description" : 'RD Station Client for PHP',
     "keywords" : ['rdstation-php-client'],
     "homepage": "https://github.com/contamobi/rdstation-php-client/",
@@ -8,7 +8,7 @@
         {
             "name": "João Paulo De Lazari",
             "email": "joaopaulolazarif@gmail.com"
-        },
+        }
     ],
     "repositories" : [
         {
