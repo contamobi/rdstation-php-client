@@ -1,7 +1,16 @@
 {
-    "name" : 'rdstation-php-client',
+    "name" : 'rdstation-php-client/rdstation-php-client',
+    "type": "library",
     "description" : 'RD Station Client for PHP',
     "keywords" : ['rdstation-php-client'],
+    "homepage": "https://github.com/php-amqplib/php-amqplib/",
+    "authors": [
+        {
+            "name": "João Paulo De Lazari",
+            "email": "joaopaulolazarif@gmail.com",
+            "role": "Original Maintainer"
+        },
+    ],
     "repositories" : [
         {
             "type": "vcs",
