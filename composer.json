@@ -3,9 +3,9 @@
     "description" : 'RD Station Client for PHP',
     "keywords" : ['rdstation-php-client'],
     "repositories" : [
-    {
-        "type": "vcs",
-        "url": "https://github.com/contamobi/rdstation-php-client"
-    }
+        {
+            "type": "vcs",
+            "url": "https://github.com/contamobi/rdstation-php-client"
+        }
     ]
 }
