@@ -1,0 +1,11 @@
+{
+    "name" : 'rdstation-php-client',
+    "description" : 'RD Station Client for PHP',
+    "keywords" : ['rdstation-php-client'],
+    "repositories" : [
+    {
+        "type": "vcs",
+        "url": "https://github.com/contamobi/rdstation-php-client"
+    }
+    ]
+}
