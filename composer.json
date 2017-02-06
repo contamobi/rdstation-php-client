@@ -1,5 +1,5 @@
 {
-    "name" : "rdstation-php-client/rdstation-php-client",
+    "name" : "rdstation-php-client",
     "description" : "RD Station Client for PHP",
     "keywords" : ["rdstation-php-client"],
     "homepage": "https://github.com/contamobi/rdstation-php-client/",
