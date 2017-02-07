@@ -7,10 +7,7 @@ class RdstationPhpClient
     public $form_data;
     public $token;
     public $identifier;
-    public $redirect_success = null;
-    public $redirect_error = null;
     private $requiredFields = ['email', 'token_rdstation', 'identificador'];
-
     private $api_url = "http://www.rdstation.com.br/api/1.2/conversions";
 
     public function setLeadData(array $form_data)
