@@ -4,27 +4,59 @@ namespace RdstationPhpClient;
 
 class RdstationPhpClient
 {
-    public $form_data;
-    public $token;
-    public $identifier;
+    private $leadData;
+    private $token;
+    private $identifier;
     private $requiredFields = ['email', 'token_rdstation', 'identificador'];
-    private $api_url = "http://www.rdstation.com.br/api/1.2/conversions";
+    private $apiUrl = "http://www.rdstation.com.br/api/1.2/conversions";
 
-    public function setLeadData(array $form_data)
+    /**
+     * setLeadData
+     * @param array $leadData
+     */
+    public function setLeadData(array $leadData)
     {
-        $this->form_data = $form_data;
+        $this->leadData = $leadData;
     }
 
+    /**
+     * setToken
+     * @param string $token
+     */
+    public function setToken(string $token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * setIdentifier
+     * @param string $identifier
+     */
+    public function setIdentifier(string $identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
+     * Method for ignore fields of leadData
+     * @param  array  $fields
+     * @return void
+     */
     public function ignoreFields(array $fields)
     {
-        foreach ($this->form_data as $field => $value) {
+        foreach ($this->leadData as $field => $value) {
             if (in_array($field, $fields)) {
-                unset($this->form_data[$field]);
+                unset($this->leadData[$field]);
             }
         }
     }
 
-    private function canSaveLead($data)
+    /**
+     * Method for validate fields of leadData
+     * @param  array $data
+     * @return bool
+     */
+    private function canSaveLead(array $data)
     {
         foreach ($this->requiredFields as $field) {
             if (empty($data[$field]) || is_null($data[$field])) {
@@ -34,20 +66,24 @@ class RdstationPhpClient
         return strlen($data['token_rdstation']) == 32 ? true : false;
     }
 
+    /**
+     * Method for get errors for validation of leadData
+     * @return array
+     */
     private function getError()
     {
         $message = [];
-        $data_array = $this->form_data;
-        $data_array['token_rdstation'] = $this->token;
-        $data_array['identificador'] = $this->identifier;
+        $dataArray = $this->leadData;
+        $dataArray['token_rdstation'] = $this->token;
+        $dataArray['identificador'] = $this->identifier;
         // check error
         foreach ($this->requiredFields as $field) {
-            if (empty($data_array[$field]) || is_null($data_array[$field])) {
+            if (empty($dataArray[$field]) || is_null($dataArray[$field])) {
                 $message[] = 'This field '.$field.' can\'t is empty.';
             }
         }
 
-        if (!strlen($data_array['token_rdstation']) == 32) {
+        if (!strlen($dataArray['token_rdstation']) == 32) {
             $message[] = 'Invalid token.';
         }
 
@@ -61,24 +97,27 @@ class RdstationPhpClient
         ];
     }
 
+    /**
+     * Method for create lead in RDStation
+     * @return array
+     */
     public function createLead()
     {
 
-        $data_array = $this->form_data;
-        $data_array['token_rdstation'] = $this->token;
-        $data_array['identificador'] = $this->identifier;
-        $data_query = http_build_query($data_array);
+        $dataArray = $this->leadData;
+        $dataArray['token_rdstation'] = $this->token;
+        $dataArray['identificador'] = $this->identifier;
 
-        if ($this->canSaveLead($data_array)) {
-            $data_json = json_encode($data_array);
+        if ($this->canSaveLead($dataArray)) {
+            $dataJson = json_encode($dataArray);
             $header = [
                 'Content-Type: application/json',
-                'Content-Length: ' . strlen($data_json)
+                'Content-Length: ' . strlen($dataJson)
             ];
 
-            $ch = curl_init($this->api_url);
+            $ch = curl_init($this->apiUrl);
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataJson);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
