@@ -9,6 +9,7 @@ class RdstationPhpClient
     private $identifier;
     private $requiredFields = ['email', 'token_rdstation', 'identificador'];
     private $apiUrl = "http://www.rdstation.com.br/api/1.2/conversions";
+    private $apiUrlLead = "http://www.rdstation.com.br/api/1.2/leads/";
 
     /**
      * setLeadData
@@ -132,5 +133,49 @@ class RdstationPhpClient
         } else {
             return $this->getError();
         }
+    }
+
+    public function updateLeadStageAndOpportunity($email, $newStage = 0, $opportunity = false)
+    {
+        if (empty($email)) {
+            return [
+                'status' => false,
+                'message' => 'Inform lead email as the first argument.',
+            ];
+        }
+
+        $url = $this->apiUrlLead.$email;
+        $data = [
+            "auth_token" => $this->token,
+            "lead" => [
+                "lifecycle_stage" => $newStage,
+                "opportunity" => $opportunity
+            ]
+        ];
+
+        return $this->request("PUT", $url, $data);
+    }
+
+    public function request($method = "POST", $url, $data = array())
+    {
+        $data['token_rdstation'] = $this->token;
+        $JSONData = json_encode($data);
+        $URLParts = parse_url($url);
+        $fp = fsockopen(
+            $URLParts['host'],
+            isset($URLParts['port'])?$URLParts['port']:80,
+            $errno,
+            $errstr,
+            30
+        );
+        $out = $method." ".$URLParts['path']." HTTP/1.1\r\n";
+        $out .= "Host: ".$URLParts['host']."\r\n";
+        $out .= "Content-Type: application/json\r\n";
+        $out .= "Content-Length: ".strlen($JSONData)."\r\n";
+        $out .= "Connection: Close\r\n\r\n";
+        $out .= $JSONData;
+        $written = fwrite($fp, $out);
+        fclose($fp);
+        return ($written==false)?false:true;
     }
 }
