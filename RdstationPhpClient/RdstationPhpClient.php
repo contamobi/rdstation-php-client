@@ -24,7 +24,7 @@ class RdstationPhpClient
      * setToken
      * @param string $token
      */
-    public function setToken(string $token)
+    public function setToken($token)
     {
         $this->token = $token;
     }
@@ -33,7 +33,7 @@ class RdstationPhpClient
      * setIdentifier
      * @param string $identifier
      */
-    public function setIdentifier(string $identifier)
+    public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
     }
