@@ -5,7 +5,8 @@ namespace RdstationPhpClient;
 class RdstationPhpClient
 {
     private $leadData;
-    private $token;
+    private $privateToken;
+    private $publicToken;
     private $identifier;
     private $requiredFields = ['email', 'token_rdstation', 'identificador'];
     private $apiUrl = "http://www.rdstation.com.br/api/1.2/conversions";
@@ -21,12 +22,21 @@ class RdstationPhpClient
     }
 
     /**
-     * setToken
-     * @param string $token
+     * setPrivateToken
+     * @param string $privateToken
      */
-    public function setToken($token)
+    public function setPrivateToken($privateToken)
     {
-        $this->token = $token;
+        $this->privateToken = $privateToken;
+    }
+
+    /**
+     * setPublicToken
+     * @param string $publicToken
+     */
+    public function setPublicToken($publicToken)
+    {
+        $this->publicToken = $publicToken;
     }
 
     /**
@@ -75,7 +85,7 @@ class RdstationPhpClient
     {
         $message = [];
         $dataArray = $this->leadData;
-        $dataArray['token_rdstation'] = $this->token;
+        $dataArray['token_rdstation'] = $this->publicToken;
         $dataArray['identificador'] = $this->identifier;
         // check error
         foreach ($this->requiredFields as $field) {
@@ -106,7 +116,7 @@ class RdstationPhpClient
     {
 
         $dataArray = $this->leadData;
-        $dataArray['token_rdstation'] = $this->token;
+        $dataArray['token_rdstation'] = $this->publicToken;
         $dataArray['identificador'] = $this->identifier;
 
         if ($this->canSaveLead($dataArray)) {
@@ -146,7 +156,7 @@ class RdstationPhpClient
 
         $url = $this->apiUrlLead.$email;
         $data = [
-            "auth_token" => $this->token,
+            "auth_token" => $this->privateToken,
             "lead" => [
                 "lifecycle_stage" => $newStage,
                 "opportunity" => $opportunity
@@ -156,9 +166,9 @@ class RdstationPhpClient
         return $this->request("PUT", $url, $data);
     }
 
-    public function request($method = "POST", $url, $data = array())
+    public function request($method = "POST", $url, $data = [])
     {
-        $data['token_rdstation'] = $this->token;
+        $data['token_rdstation'] = $this->privateToken;
         $JSONData = json_encode($data);
         $URLParts = parse_url($url);
         $fp = fsockopen(
